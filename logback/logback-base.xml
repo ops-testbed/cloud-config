@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <included>
-    <appender name="kafkaAppender" class="com.github.danielwegener.logback.kafka.KafkaAppender">
+    <appender name="KAFKA-APPENDER" class="com.github.danielwegener.logback.kafka.KafkaAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
@@ -9,5 +9,9 @@
         <deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy"/>
 
         <producerConfig>bootstrap.servers=my-cluster-kafka-bootstrap.kafka.svc:9092</producerConfig>
+    </appender>
+
+    <appender name="ASYNC-KAFKA-APPENDER" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="kafkaAppender" />
     </appender>
 </included>
