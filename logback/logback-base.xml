@@ -2,17 +2,19 @@
 <included>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%date %-5level %thread \(%logger{15}\) [%mdc{traceId:—}:%mdc{parentId:—}:%mdc{spanId:—}:%mdc{user-id:—}] %msg%n</pattern>
+            <pattern>%date %-5level %thread \(%logger{15}\)
+                [%mdc{traceId:—}:%mdc{parentId:—}:%mdc{spanId:—}:%mdc{user-id:—}] %msg%n
+            </pattern>
             <charset>utf8</charset>
         </encoder>
     </appender>
 
     <appender name="KAFKA-APPENDER" class="com.github.danielwegener.logback.kafka.KafkaAppender">
-        <encoder class="com.github.danielwegener.logback.kafka.encoding.LayoutKafkaMessageEncoder">
-            <layout class="ch.qos.logback.classic.PatternLayout">
-                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
-            </layout>
+        <!-- custom Encoder로 수정하기 -->
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <includeCallerData>true</includeCallerData>
         </encoder>
+
         <topic>logs</topic>
         <keyingStrategy class="com.github.danielwegener.logback.kafka.keying.RoundRobinKeyingStrategy"/>
         <deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy"/>
@@ -21,6 +23,6 @@
     </appender>
 
     <appender name="ASYNC-KAFKA-APPENDER" class="ch.qos.logback.classic.AsyncAppender">
-        <appender-ref ref="KAFKA-APPENDER" />
+        <appender-ref ref="KAFKA-APPENDER"/>
     </appender>
 </included>
